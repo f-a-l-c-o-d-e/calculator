@@ -205,3 +205,13 @@ ac.addEventListener("click", () => {
     const display = document.querySelector(".calculator-display")
     display.textContent = "0"
 })
+
+
+const dot = document.querySelector(".calculator-dot")
+
+dot.addEventListener("click", () => {
+    const display = document.querySelector(".calculator-display")
+    if (!display.textContent.toString().split("").includes(".")) {
+        updateDisplay(".")
+    }
+})
