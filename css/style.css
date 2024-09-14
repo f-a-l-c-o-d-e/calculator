@@ -58,6 +58,7 @@ h1 {
 }
 
 .calculator-display {
+    height: 70px;
     text-align: right;
     border-radius: 10px;
     padding: 5px;
