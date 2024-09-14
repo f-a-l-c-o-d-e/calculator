@@ -1,46 +1,16 @@
 let operator = "*"
 let firstNumber = 1
 let secondNumber = 0
+let result = 0
+let resetDisplay = true
+let equalPressed = true
+let operatorIsActive = false
+let delNumber = false
+const maxDigit = 12
+const display = document.querySelector(".calculator-display")
 
-function add(a, b) {
-    return a + b
-}
-function subtract(a, b) {
-    return a - b 
-}
-function multiply(a, b) {
-    return a * b
-}
-function divide(a, b) {
-    return a / b
-}
-
-function operate(a,operator,b) {
-    if (operator === "+") {
-        return add(a,b)
-    } else if (operator === "-") {
-        return subtract(a,b)
-    } else if (operator === "*") {
-        return multiply(a,b)
-    } else if (operator === "/") {
-        return divide(a,b)
-    }
-}
-
-
-const one = document.querySelector(".calculator-1")
-const two = document.querySelector(".calculator-2")
-const three = document.querySelector(".calculator-3")
-const four = document.querySelector(".calculator-4")
-const five = document.querySelector(".calculator-5")
-const six = document.querySelector(".calculator-6")
-const seven = document.querySelector(".calculator-7")
-const eight = document.querySelector(".calculator-8")
-const nine = document.querySelector(".calculator-9")
-const zero = document.querySelector(".calculator-0")
 
 document.addEventListener("keydown", event => {
-    console.log(event.code)
     switch (event.code) {
         case "Numpad1":
             updateDisplay("1")
@@ -85,26 +55,13 @@ document.addEventListener("keydown", event => {
             calculate("*")
             break;
         case "NumpadDecimal":
-            let display = document.querySelector(".calculator-display")
-            if (!display.textContent.toString().split("").includes(".")) {
-                updateDisplay(".")
-            }
+            float()
             break;
         case "NumpadEnter":
             equal(true)
             break;
         case "Backspace":
-            if (delNumber === true) {
-                const display = document.querySelector(".calculator-display")
-                let number = display.textContent
-                number = number.toString().split("").slice(0,-1).join("")
-                display.textContent = number
-            
-                molt = false
-                div = false
-                adds = false
-                sub = false       
-            }
+            cancel()
             break;
         case "Delete":
             reset()
@@ -112,81 +69,108 @@ document.addEventListener("keydown", event => {
     }
 })
 
+const calculator = document.querySelector(".calculator")
 
+calculator.addEventListener("click", event => {
+    console.log(event.target.id)
+    switch (event.target.id) {
+        case "one":
+            updateDisplay("1")
+            break;
+        case "two":
+            updateDisplay("2")
+            break;
+        case "three":
+            updateDisplay("3")
+            break;
+        case "four":
+            updateDisplay("4")
+            break;
+        case "five":
+            updateDisplay("5")
+            break;
+        case "six":
+            updateDisplay("6")
+            break;
+        case "seven":
+            updateDisplay("7")
+            break;
+        case "eight":
+            updateDisplay("8")
+            break;
+        case "nine":
+            updateDisplay("9")
+            break;
+        case "zero":
+            updateDisplay("0")
+            break;
+        case "subtraction":
+            calculate("-")
+            break;
+        case "addition":
+            calculate("+")
+            break;
+        case "division":
+            calculate("/")
+            break;
+        case "multiplication":
+            calculate("*")
+            break;
+        case "dot":
+            float()
+            break;
+        case "equal":
+            equal(true)
+            break;
+        case "DEL":
+            cancel()
+            break;
+        case "AC":
+            reset()
+            break;
+    }
+})
 
-
-
-
-one.addEventListener("click", () => updateDisplay("1"))
-two.addEventListener("click", () => updateDisplay("2"))
-three.addEventListener("click", () => updateDisplay("3"))
-four.addEventListener("click", () => updateDisplay("4"))
-five.addEventListener("click", () => updateDisplay("5"))
-six.addEventListener("click", () => updateDisplay("6"))
-seven.addEventListener("click", () => updateDisplay("7"))
-eight.addEventListener("click", () => updateDisplay("8"))
-nine.addEventListener("click", () => updateDisplay("9"))
-zero.addEventListener("click", () => updateDisplay("0"))
+function operate(a,operator,b) {
+    let result = 0
+    if (operator === "+") {
+        result = a + b
+    } else if (operator === "-") {
+        result = a-b
+    } else if (operator === "*") {
+        result = a * b
+    } else if (operator === "/") {
+        result = a / b
+    } else {
+        console.log("Something goes wrong in the operate function")
+    }
+    return result
+}
 
 function updateDisplay(toAdd) {
     if (resetDisplay === true) {
-        const display = document.querySelector(".calculator-display")
-        number = toAdd
+        let number = toAdd
         display.textContent = number
         resetDisplay = false
     } else {
-        const display = document.querySelector(".calculator-display")
         let number = display.textContent
         number = number + toAdd
-        if (number.length <= 12) {
+        if (number.length <= maxDigit) {
             display.textContent = number
         } else {
-            display.textContent = number.split("").slice(-12).join("")
+            display.textContent = number.split("").slice(-maxDigit).join("")
         }
     }
     delNumber = true
-    molt = false
-    div = false
-    adds = false
-    sub = false
-    // if (delNumber !== true) {
-    //     del.disabled = true
-    // } else {
-    //     del.disabled = false
-    // }
+    operatorIsActive = false
 }
 
-
-const moltiplication = document.querySelector(".calculator-moltiplication")
-const division = document.querySelector(".calculator-division")
-const addition = document.querySelector(".calculator-plus")
-const subtraction = document.querySelector(".calculator--")
-const equals = document.querySelector(".calculator-equal")
-
-moltiplication.addEventListener("click", () => calculate("*"))
-division.addEventListener("click", () => calculate("/"))
-addition.addEventListener("click", () => calculate("+"))
-subtraction.addEventListener("click", () => calculate("-"))
-equals.addEventListener("click", () => equal(true))
-
-let firstCalc = true
-let result = 0
-let resetDisplay = true
-let equalPressed = false
-let molt = false
-let div = false
-let adds = false
-let sub = false
-let delNumber = false
-
 function calculate(strOperator) {
-    if (molt !== true && div !== true && adds !== true && sub !== true) {
-        if (firstCalc === true || equalPressed === true) {
+    if (operatorIsActive === false) {
+        if (equalPressed === true) {
             operator = strOperator
-            const display = document.querySelector(".calculator-display")
             firstNumber = display.textContent
             resetDisplay = true
-            firstCalc = false
             equalPressed = false
             delNumber = false
         } else {
@@ -196,44 +180,25 @@ function calculate(strOperator) {
             operator = strOperator
             delNumber = false
         }
-        switch (strOperator){
-            case "*":
-                molt = true
-                break;
-            case "/":
-                div = true
-                break;
-            case "+":
-                adds = true
-                break;
-            case "-":
-                sub = true
-                break;
-        }
+        operatorIsActive = true
     } else {
         operator = strOperator
     }
-    // if (delNumber !== true) {
-    //     del.disabled = true
-    // } else {
-    //     del.disabled = false
-    // }
 }
 
 function equal(equalPresseds) {
-    if (equalPressed === false && molt !== true && div !== true && adds !== true && sub !== true) {
-        const display = document.querySelector(".calculator-display")
+    if (equalPressed === false && operatorIsActive === false) {
         secondNumber = display.textContent
         result = operate(Number(firstNumber), operator, Number(secondNumber)).toString()
         delNumber = false
-        if (result.length <= 12) {
+        if (result.length <= maxDigit) {
             display.textContent = result
         } else {
-            if (12 - 1 - Number(result).toExponential(0).toString().length <= 12) {
-                console.log(12 - 1 - Number(result).toExponential(0).toString().length)
-                display.textContent = Number(result).toExponential(12 - 1 - Number(result).toExponential(0).toString().length)
+            if (maxDigit - 1 - Number(result).toExponential(0).toString().length <= maxDigit) {
+                console.log(maxDigit - 1 - Number(result).toExponential(0).toString().length)
+                display.textContent = Number(result).toExponential(maxDigit - 1 - Number(result).toExponential(0).toString().length)
             } else {
-                display.textContent = Number(result).toExponential(0).toString().split("").slice(-12).join("")
+                display.textContent = Number(result).toExponential(0).toString().split("").slice(-maxDigit).join("")
             }
         }
         if (equalPresseds === true) {
@@ -241,33 +206,17 @@ function equal(equalPresseds) {
         } else {
             equalPressed = false
         }
-        // if (delNumber !== true) {
-        //     del.disabled = true
-        // } else {
-        //     del.disabled = false
-        // }
     }
 }
 
-
-const del = document.querySelector(".calculator-DEL")
-const ac = document.querySelector(".calculator-AC")
-
-del.addEventListener("click", () => {
+function cancel() {
     if (delNumber === true) {
-        const display = document.querySelector(".calculator-display")
         let number = display.textContent
         number = number.toString().split("").slice(0,-1).join("")
         display.textContent = number
-    
-        molt = false
-        div = false
-        adds = false
-        sub = false       
+        operatorIsActive = false   
     }
-})
-
-ac.addEventListener("click", () => reset())
+}
 
 function reset() {
     operator = "*"
@@ -277,21 +226,13 @@ function reset() {
     result = 0
     resetDisplay = true
     equalPressed = false
-    molt = false
-    div = false
-    adds = false
-    sub = false
+    operatorIsActive = false
     delNumber = false
-    const display = document.querySelector(".calculator-display")
     display.textContent = "0"
 }
 
-
-const dot = document.querySelector(".calculator-dot")
-
-dot.addEventListener("click", () => {
-    const display = document.querySelector(".calculator-display")
+function float() {
     if (!display.textContent.toString().split("").includes(".")) {
         updateDisplay(".")
     }
-})
+}
