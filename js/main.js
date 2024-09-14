@@ -39,6 +39,84 @@ const eight = document.querySelector(".calculator-8")
 const nine = document.querySelector(".calculator-9")
 const zero = document.querySelector(".calculator-0")
 
+document.addEventListener("keydown", event => {
+    console.log(event.code)
+    switch (event.code) {
+        case "Numpad1":
+            updateDisplay("1")
+            break;
+        case "Numpad2":
+            updateDisplay("2")
+            break;
+        case "Numpad3":
+            updateDisplay("3")
+            break;
+        case "Numpad4":
+            updateDisplay("4")
+            break;
+        case "Numpad5":
+            updateDisplay("5")
+            break;
+        case "Numpad6":
+            updateDisplay("6")
+            break;
+        case "Numpad7":
+            updateDisplay("7")
+            break;
+        case "Numpad8":
+            updateDisplay("8")
+            break;
+        case "Numpad9":
+            updateDisplay("9")
+            break;
+        case "Numpad0":
+            updateDisplay("0")
+            break;
+        case "NumpadSubtract":
+            calculate("-")
+            break;
+        case "NumpadAdd":
+            calculate("+")
+            break;
+        case "NumpadDivide":
+            calculate("/")
+            break;
+        case "NumpadMultiply":
+            calculate("*")
+            break;
+        case "NumpadDecimal":
+            let display = document.querySelector(".calculator-display")
+            if (!display.textContent.toString().split("").includes(".")) {
+                updateDisplay(".")
+            }
+            break;
+        case "NumpadEnter":
+            equal(true)
+            break;
+        case "Backspace":
+            if (delNumber === true) {
+                const display = document.querySelector(".calculator-display")
+                let number = display.textContent
+                number = number.toString().split("").slice(0,-1).join("")
+                display.textContent = number
+            
+                molt = false
+                div = false
+                adds = false
+                sub = false       
+            }
+            break;
+        case "Delete":
+            reset()
+            break;
+    }
+})
+
+
+
+
+
+
 one.addEventListener("click", () => updateDisplay("1"))
 two.addEventListener("click", () => updateDisplay("2"))
 three.addEventListener("click", () => updateDisplay("3"))
@@ -189,7 +267,9 @@ del.addEventListener("click", () => {
     }
 })
 
-ac.addEventListener("click", () => {
+ac.addEventListener("click", () => reset())
+
+function reset() {
     operator = "*"
     firstNumber = 1
     secondNumber = 0
@@ -204,7 +284,7 @@ ac.addEventListener("click", () => {
     delNumber = false
     const display = document.querySelector(".calculator-display")
     display.textContent = "0"
-})
+}
 
 
 const dot = document.querySelector(".calculator-dot")
