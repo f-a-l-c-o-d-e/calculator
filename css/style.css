@@ -15,26 +15,80 @@ button {
     width: 75px;
     height: 75px;
 
-    border-radius: 15%;
+    border-radius: 10px;
     border: none;
 }
 
 body {
     font-family: "Protest Guerrilla";
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
 }
 
 h1 {
     font-size: 75px;
     text-align: center;
+
+    padding-bottom: 20px;
+    flex: 0 0 auto;
+}
+
+.container-calculator {
+    font-size: 50px;
+
+    flex: 1 0 auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .calculator{
-    font-size: 50px;
+    background-color: black;
+    border-radius: 10px;
+
+    width: 400px;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .calculator-display {
     text-align: right;
+    border-radius: 10px;
+    padding: 5px;
+    background-color: white;
 }
+
+.calculator-buttons {
+    align-self: center;
+    
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.calculator-firstRow,
+.calculator-secondRow,
+.calculator-thirdRow,
+.calculator-fourthRow,
+.calculator-fifthRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px
+}
+
+.calculator-AC,
+.calculator-DEL,
+.calculator-0 {
+    flex: 2 0 auto;
+}
+
 
 .red {
     background-color: red;
